@@ -1,0 +1,52 @@
+body {
+    display: flex;
+    justify-content: center;
+    margin : 0;
+    padding: 0;
+}
+
+#start-screen {
+    height: 900px;
+    width: 1000px;
+    margin: 100px auto;
+    display: flex;
+    justify-content: center;
+    flex-direction:column;
+
+}
+
+#start-background {
+    width: 100%;
+    height: 100%;
+    z-index:0 
+}
+
+#start-message {
+    position:relative; 
+    bottom:500px; 
+    left:200px;
+    padding: 50px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#start-button{
+    height: 80px;
+    width: 80px;
+    background-color: transparent;
+    border-radius: 50%;
+    position:relative; 
+    bottom:250px; 
+    left:840px; 
+    z-index:1 
+}
+
+#canvas {
+    background-color: aqua;
+    position:absolute; 
+    top:50px; 
+    left:50px; 
+    z-index:2
+}
+ 
