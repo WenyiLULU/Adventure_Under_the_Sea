@@ -43,7 +43,6 @@ body {
 }
 
 #canvas {
-    background-color: aqua;
     position:absolute; 
     top:50px; 
     left:50px; 
