@@ -58,11 +58,17 @@ body {
     position:fixed;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     flex-direction:column;
     background-image: url("./image/game_over_screan.jpg");
     background-size: cover;
     z-index:3
+}
 
+#game-over-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 

@@ -141,8 +141,8 @@ function drawFish(){
         if (xPos > -fishW) {
             nextFish.push(fish);
         }
-        if (playerX <= xPos + fishW/3 && playerX + playerW / 3 >= xPos && 
-            playerY + playerH / 3 >= yPos && playerY <= yPos + fishH / 3) {
+        if (playerX <= xPos + fishW / 3 * 2 && playerX + playerW / 3 * 2 >= xPos && 
+            playerY + playerH / 3 * 2 >= yPos && playerY <= yPos + fishH / 3 * 2) {
                 gameOver = true;
             }
     })
@@ -189,7 +189,6 @@ function drawPlankton(){
                 playerH *= 1.05;
                 playerW *= 1.05;
                }
-               
             } else {
                 if (yPos > -planktonH) {
                     nexPlankton.push(food);
@@ -267,7 +266,8 @@ function startGame(){
 function gameOverScreen(){
     window.setTimeout(()=> {
         gameBoard.style.display = "none";
-        gameOverBoard.style.display = "block";
+        //gameOverBoard.style.display = "block";
+        gameOverBoard.style.visibility= "visible";
         gameOverBoard.querySelector('#score').innerHTML = `Your score is ${score}`
         gameOverBoard.querySelector('#record').innerHTML = `Your record is ${bestScore}.`
     }, 1000)
@@ -280,7 +280,8 @@ function restartGame(){
     score = 0;
     playerH = 80;
     playerW = 80;
-    gameOverBoard.style.display = "none";
+    //gameOverBoard.style.display = "none";
+    gameOverBoard.style.visibility= "hidden";
 
     startGame()
 }
@@ -288,7 +289,8 @@ function restartGame(){
 // --- listeners ---
 window.addEventListener("load", () => {
     gameBoard.style.display = "none";
-    gameOverBoard.style.display = "none";
+    //gameOverBoard.style.display = "none";
+    gameOverBoard.style.visibility= "hidden";
     startBtn.addEventListener("click", () => {
       startGame();
     }); 
