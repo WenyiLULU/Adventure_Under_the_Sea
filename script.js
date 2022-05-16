@@ -23,20 +23,25 @@ fishS.src = './image/d2_fish.png';
 let animationId;
 let gameOver = false;
 
+// --- scores and life ---
+let score = 0;
+let bestScore = 0;
+let life = 3;
+
 // --- player setting ---
-const playerH = 80;
-const playerW = 80;
+let playerH = 80;
+let playerW = 80;
 let playerX = (canvas.width - playerW) / 2;
 let playerY = canvas.height - 200;
 
 // --- danger fish setting ---
-const fishHeight = 80;
-const fishWidth = 100;
+const fishHeight = 100;
+const fishWidth = 150;
 const fishSpeed = -3;
 
 // --- food setting ---
-const planktonHeight = 30;
-const planktonWeight = 30;
+const planktonHeight = 50;
+const planktonWeight = 50;
 const planktonSpeed = 2;
 
 // --- dangers ---
@@ -55,7 +60,18 @@ class Fish {
 let fishArray = [];
 
 // --- foods ---
-
+class Plankton {
+    constructor(){
+        this.planktonH = planktonHeight;
+        this.planktonW = planktonWeight;
+        this.xPos = Math.floor(Math.random()*(canvas.width - this.planktonW));
+        this.yPos = -(this.planktonH);
+    }
+    move (){
+        this.yPos += planktonSpeed;
+    }
+}
+let foodsArray = [new Plankton];
 
 // --- draw background ---
 function drawBackground(){
@@ -83,13 +99,34 @@ function drawFish(){
         if (xPos > -fishW) {
             nextFish.push(fish);
         }
-        if (playerX <= xPos + fishW && playerX + playerW -10 >= xPos && 
+        if (playerX <= xPos + fishW/2 && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + fishH) {
                 gameOver = true;
             }
     })
-    fishArray = nextFish;
-    
+    fishArray = nextFish;   
+}
+
+// --- draw foods ---
+function drawPlankton(){
+    const nexPlankton = [];
+    foodsArray.forEach(food => {
+        food.move();
+        const {xPos, yPos, planktonW, planktonH} = food;
+        ctx.drawImage(plankton, xPos, yPos, planktonW, planktonH);
+        
+        if (playerX <= xPos + planktonW && playerX + playerW -10 >= xPos && 
+            playerY + playerH >= yPos && playerY + 10 <= yPos + planktonH) {
+               score += 1;
+               playerH *= 1.1;
+               playerW *= 1.1;
+            } else {
+                if (yPos > -planktonH) {
+                    nexPlankton.push(food);
+                }
+            }
+    })
+    foodsArray = nexPlankton; 
 }
 
 // --- get mouse position ---
@@ -101,6 +138,15 @@ function getMousePos(canvas, evt) {
     };
   }
 
+// --- draw score ---
+function drawScore() {
+    ctx.beginPath();
+    ctx.font = "30px sans-serif";
+    ctx.fillStyle = "white";
+    ctx.fillText(`Score : ${score}`, 80, 50);
+    ctx.closePath();
+  }
+
 // --- animate ---
 function animate(){
     drawBackground()
@@ -108,8 +154,16 @@ function animate(){
     if (animationId % 130 === 0) {
         fishArray.push(new Fish)
     }
+    if (animationId % 100 === 0) {
+        foodsArray.push(new Plankton)
+    }
     drawFish()
+    drawPlankton()
+    drawScore()
     if(gameOver){
+        if (score > bestScore) {
+            bestScore = score;
+          }
         cancelAnimationFrame(animationId)
         gameOverScreen()
     } else {
@@ -126,11 +180,17 @@ function gameOverScreen(){
     window.setTimeout(()=> {
         gameBoard.style.display = "none";
         gameOverBoard.style.display = "block";
+        gameOverBoard.querySelector('#score').innerHTML = `Your score is ${score}`
+        gameOverBoard.querySelector('#record').innerHTML = `Your record is ${bestScore}.`
     }, 1000)
 }
 function restartGame(){
     gameOver = false;
     fishArray = [];
+    foodsArray = [];
+    score = 0;
+    playerH = 80;
+    playerW = 80;
     gameOverBoard.style.display = "none";
     startGame()
 }

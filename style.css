@@ -53,6 +53,7 @@ body {
     height: 800px;
     width: 1200px;
     margin: 50px auto;
+    color: white;
     position:fixed;
     display: flex;
     justify-content: center;
@@ -60,5 +61,7 @@ body {
     flex-direction:column;
     background-image: url("./image/game_over_screan.jpg");
     background-size: cover;
+    z-index:3
+
 }
 
