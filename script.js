@@ -1,8 +1,10 @@
 // --- get elements ---
 const gameBoard = document.getElementById('game-board')
+const gameOverBoard = document.getElementById('game-over-screen')
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const startBtn = document.getElementById('start-button');
+const restartBtn = document.getElementById('restart');
 
 // --- imput images ---
 const bgImg = new Image();
@@ -11,10 +13,11 @@ const goImg = new Image();
 goImg.src = './image/game_over_screan.jpg';
 const shrimp = new Image();
 shrimp.src = './image/p1_shrimp.png';
-const plankdon = new Image();
-plankdon.src = './image/f1_plankton.png';
+const plankton = new Image();
+plankton.src = './image/f1_plankton.png';
 const fishS = new Image();
 fishS.src = './image/d2_fish.png';
+
 
 // --- animate control ---
 let animationId;
@@ -31,6 +34,12 @@ const fishHeight = 80;
 const fishWidth = 100;
 const fishSpeed = -3;
 
+// --- food setting ---
+const planktonHeight = 30;
+const planktonWeight = 30;
+const planktonSpeed = 2;
+
+// --- dangers ---
 class Fish {
     constructor(){
         this.fishW = fishWidth;
@@ -43,7 +52,10 @@ class Fish {
     }
 }
 
-let fishArray = [new Fish];
+let fishArray = [];
+
+// --- foods ---
+
 
 // --- draw background ---
 function drawBackground(){
@@ -71,9 +83,13 @@ function drawFish(){
         if (xPos > -fishW) {
             nextFish.push(fish);
         }
+        if (playerX <= xPos + fishW && playerX + playerW -10 >= xPos && 
+            playerY + playerH >= yPos && playerY + 10 <= yPos + fishH) {
+                gameOver = true;
+            }
     })
     fishArray = nextFish;
-    console.log(fishArray)
+    
 }
 
 // --- get mouse position ---
@@ -93,18 +109,36 @@ function animate(){
         fishArray.push(new Fish)
     }
     drawFish()
-    animationId = requestAnimationFrame(animate);
+    if(gameOver){
+        cancelAnimationFrame(animationId)
+        gameOverScreen()
+    } else {
+        animationId = requestAnimationFrame(animate);
+    }
 }
 
-// --- start game ---
+// --- game status ---
 function startGame(){
     gameBoard.style.display = "block";
     animate()
+}
+function gameOverScreen(){
+    window.setTimeout(()=> {
+        gameBoard.style.display = "none";
+        gameOverBoard.style.display = "block";
+    }, 1000)
+}
+function restartGame(){
+    gameOver = false;
+    fishArray = [];
+    gameOverBoard.style.display = "none";
+    startGame()
 }
 
 // --- listeners ---
 window.addEventListener("load", () => {
     gameBoard.style.display = "none";
+    gameOverBoard.style.display = "none";
     startBtn.addEventListener("click", () => {
       startGame();
     }); 
@@ -118,4 +152,7 @@ window.addEventListener("load", () => {
         
     });
 
+    restartBtn.addEventListener("click", () => {
+        restartGame();
+    })
   });

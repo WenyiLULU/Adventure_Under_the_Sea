@@ -49,3 +49,16 @@ body {
     z-index:2
 }
 
+#game-over-screen {
+    height: 800px;
+    width: 1200px;
+    margin: 50px auto;
+    position:fixed;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction:column;
+    background-image: url("./image/game_over_screan.jpg");
+    background-size: cover;
+}
+
