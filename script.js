@@ -17,11 +17,16 @@ const plankton = new Image();
 plankton.src = './image/f1_plankton.png';
 const fishS = new Image();
 fishS.src = './image/d2_fish.png';
+const fishPlayer = new Image();
+fishPlayer.src = './image/p2_fish.png';
+const jellyfishImg = new Image();
+jellyfishImg.src = './image/d2_jellyfish.png';
 
 
 // --- animate control ---
 let animationId;
 let gameOver = false;
+const scoreLevel = [6, 16]
 
 // --- scores and life ---
 let score = 0;
@@ -35,9 +40,15 @@ let playerX = (canvas.width - playerW) / 2;
 let playerY = canvas.height - 200;
 
 // --- danger fish setting ---
-const fishHeight = 100;
-const fishWidth = 150;
+let fishHeight = 100;
+let fishWidth = 150;
 const fishSpeed = -3;
+let fishArray = [];
+const jellyfishHeight = 200;
+const jellyfishWidth = 100;
+let jellyfishSpeedR = 0.5;
+let jellyfishSpeedD = 1;
+
 
 // --- food setting ---
 const planktonHeight = 50;
@@ -57,7 +68,25 @@ class Fish {
     }
 }
 
-let fishArray = [];
+class Jellyfish {
+    constructor(){
+        this.fishW = jellyfishWidth;
+        this.fishH = jellyfishHeight;
+        this.xPos = -(jellyfishWidth);
+        this.yPos = Math.floor(Math.random()*(canvas.height/4));
+    }
+    move (){
+        if(this.xPos + this.fishW > canvas.width || this.xPos < -(jellyfishWidth)){
+            jellyfishSpeedR *= -1}
+    
+        this.xPos += jellyfishSpeedR;
+        if(this.yPos + this.fishH > canvas.height*3/4 || this.yPos < 0){
+            jellyfishSpeedD *= -1;
+        } 
+        this.yPos += jellyfishSpeedD;
+    }
+}
+let jellyfishArray = [];
 
 // --- foods ---
 class Plankton {
@@ -79,14 +108,18 @@ function drawBackground(){
 }
 
 // --- draw player ---
-function drawShrimp(){
+function drawPlayer(){
     if(playerX + playerW > canvas.width){
         playerX = canvas.width - playerW;
     }
     if(playerY + playerH > canvas.height){
         playerY = canvas.height - playerH;
     }
-    ctx.drawImage(shrimp, playerX, playerY, playerW, playerH);
+    if(score < 6){
+        ctx.drawImage(shrimp, playerX, playerY, playerW, playerH);
+    }else{   
+        ctx.drawImage(fishPlayer, playerX, playerY, playerW, playerH);
+    }
 }
 
 // --- draw big fish ---
@@ -99,12 +132,35 @@ function drawFish(){
         if (xPos > -fishW) {
             nextFish.push(fish);
         }
-        if (playerX <= xPos + fishW/2 && playerX + playerW -10 >= xPos && 
+        if (playerX <= xPos + fishW/3 && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + fishH) {
                 gameOver = true;
             }
     })
     fishArray = nextFish;   
+}
+function drawJellyfish(){
+    const nextJellyfish = [];
+    jellyfishArray.forEach(jellyfish => {
+        jellyfish.move();
+        const {xPos, yPos, fishW, fishH} = jellyfish;
+        ctx.drawImage(jellyfishImg, xPos, yPos, fishW, fishH);
+       
+        if (playerX <= xPos + fishW && playerX + playerW >= xPos && 
+            playerY + playerH >= yPos && playerY <= yPos + fishH) {
+                life -= 1; 
+                jellyfish.xPos += fishW * 2;  
+                nextJellyfish.push(jellyfish);
+            } else {
+                nextJellyfish.push(jellyfish);
+            }
+
+        console.log(life)
+        if(life <= 0){
+            gameOver = true;
+        }
+    })
+    jellyfishArray = nextJellyfish;   
 }
 
 // --- draw foods ---
@@ -118,8 +174,14 @@ function drawPlankton(){
         if (playerX <= xPos + planktonW && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + planktonH) {
                score += 1;
-               playerH *= 1.1;
-               playerW *= 1.1;
+               if(score === 6) {
+                   playerH = 80;
+                   playerW = 100;
+               } else {
+                playerH *= 1.1;
+                playerW *= 1.1;
+               }
+               
             } else {
                 if (yPos > -planktonH) {
                     nexPlankton.push(food);
@@ -142,15 +204,24 @@ function getMousePos(canvas, evt) {
 function drawScore() {
     ctx.beginPath();
     ctx.font = "30px sans-serif";
-    ctx.fillStyle = "white";
-    ctx.fillText(`Score : ${score}`, 80, 50);
+    ctx.fillStyle = "orange";
+    ctx.fillText(`Score : ${score}`, 1000, 50);
     ctx.closePath();
   }
+
+// --- draw life ---
+function drawLife(){
+    ctx.beginPath();
+    ctx.font = "30px sans-serif";
+    ctx.fillStyle = "tomato";
+    ctx.fillText(`Life : ${life}`, 50, 50);
+    ctx.closePath();
+}
 
 // --- animate ---
 function animate(){
     drawBackground()
-    drawShrimp()
+    drawPlayer()
     if (animationId % 130 === 0) {
         fishArray.push(new Fish)
     }
@@ -160,6 +231,14 @@ function animate(){
     drawFish()
     drawPlankton()
     drawScore()
+    
+    if(score > 5) {
+        drawLife()
+        if(jellyfishArray.length < 1) {
+            jellyfishArray.push(new Jellyfish)
+        }
+        drawJellyfish()
+    }
     if(gameOver){
         if (score > bestScore) {
             bestScore = score;
@@ -192,6 +271,7 @@ function restartGame(){
     playerH = 80;
     playerW = 80;
     gameOverBoard.style.display = "none";
+
     startGame()
 }
 
@@ -204,9 +284,12 @@ window.addEventListener("load", () => {
     }); 
 
     canvas.addEventListener("mousemove", function(event) { 
-        let cRect = canvas.getBoundingClientRect();              // Gets the CSS positions along with width/height
-        let canvasX = Math.round(event.clientX - cRect.left);        // Subtract the 'left' of the canvas from the X/Y
-        let canvasY = Math.round(event.clientY - cRect.top);         // positions to get make (0,0) the top left of the 
+        let cRect = canvas.getBoundingClientRect();              
+        // Gets the CSS positions along with width/height
+        let canvasX = Math.round(event.clientX - cRect.left);        
+        // Subtract the 'left' of the canvas from the X/Y
+        let canvasY = Math.round(event.clientY - cRect.top);         
+        // positions to get make (0,0) the top left of the 
         playerX = canvasX;
         playerY = canvasY;
         
