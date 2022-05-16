@@ -19,6 +19,8 @@ const fishS = new Image();
 fishS.src = './image/d2_fish.png';
 const fishL = new Image();
 fishL.src = './image/d2_big_fish.png';
+const shark = new Image();
+shark.src = './image/d3_shark.png'
 const fishPlayer = new Image();
 fishPlayer.src = './image/p2_fish.png';
 const jellyfishImg = new Image();
@@ -117,10 +119,12 @@ function drawPlayer(){
     if(playerY + playerH > canvas.height){
         playerY = canvas.height - playerH;
     }
-    if(score < 6){
+    if(score <= 5){
         ctx.drawImage(shrimp, playerX, playerY, playerW, playerH);
-    }else{   
+    }else if (score > 5 && score <= 15) {   
         ctx.drawImage(fishPlayer, playerX, playerY, playerW, playerH);
+    }else {
+        ctx.drawImage(fishL, playerX, playerY, playerW, playerH);
     }
 }
 
@@ -130,15 +134,19 @@ function drawFish(){
     fishArray.forEach(fish => {
         fish.move();
         const {xPos, yPos, fishW, fishH} = fish;
-        if (score < 6) {
+        if (score <= 5) {
             ctx.drawImage(fishS, xPos, yPos, fishW, fishH);
-        } else {
+        } else if (score > 5 && score <= 15){
             fish.fishW = fishWidth * 1.1
             fish.fishH = fishHeight * 1.2
             ctx.drawImage(fishL, xPos, yPos, fishW, fishH);
+        } else {
+            fish.fishW = fishWidth * 2
+            fish.fishH = fishHeight * 1.5
+            ctx.drawImage(shark, xPos, yPos, fishW, fishH);
         }
 
-        if (xPos > -fishW) {
+        if (xPos > -(fishW)) {
             nextFish.push(fish);
         }
         if (playerX <= xPos + fishW / 3 * 2 && playerX + playerW / 3 * 2 >= xPos && 
@@ -182,7 +190,7 @@ function drawPlankton(){
         if (playerX <= xPos + planktonW && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + planktonH) {
                score += 1;
-               if(score === 6) {
+               if(score === 6 || score === 16) {
                    playerH = 80;
                    playerW = 100;
                } else {
@@ -266,7 +274,6 @@ function startGame(){
 function gameOverScreen(){
     window.setTimeout(()=> {
         gameBoard.style.display = "none";
-        //gameOverBoard.style.display = "block";
         gameOverBoard.style.visibility= "visible";
         gameOverBoard.querySelector('#score').innerHTML = `Your score is ${score}`
         gameOverBoard.querySelector('#record').innerHTML = `Your record is ${bestScore}.`
@@ -280,7 +287,6 @@ function restartGame(){
     score = 0;
     playerH = 80;
     playerW = 80;
-    //gameOverBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
 
     startGame()
@@ -289,7 +295,6 @@ function restartGame(){
 // --- listeners ---
 window.addEventListener("load", () => {
     gameBoard.style.display = "none";
-    //gameOverBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     startBtn.addEventListener("click", () => {
       startGame();
