@@ -17,6 +17,8 @@ const plankton = new Image();
 plankton.src = './image/f1_plankton.png';
 const fishS = new Image();
 fishS.src = './image/d2_fish.png';
+const fishL = new Image();
+fishL.src = './image/d2_big_fish.png';
 const fishPlayer = new Image();
 fishPlayer.src = './image/p2_fish.png';
 const jellyfishImg = new Image();
@@ -128,17 +130,25 @@ function drawFish(){
     fishArray.forEach(fish => {
         fish.move();
         const {xPos, yPos, fishW, fishH} = fish;
-        ctx.drawImage(fishS, xPos, yPos, fishW, fishH);
+        if (score < 6) {
+            ctx.drawImage(fishS, xPos, yPos, fishW, fishH);
+        } else {
+            fish.fishW = fishWidth * 1.1
+            fish.fishH = fishHeight * 1.2
+            ctx.drawImage(fishL, xPos, yPos, fishW, fishH);
+        }
+
         if (xPos > -fishW) {
             nextFish.push(fish);
         }
-        if (playerX <= xPos + fishW/3 && playerX + playerW -10 >= xPos && 
-            playerY + playerH >= yPos && playerY + 10 <= yPos + fishH) {
+        if (playerX <= xPos + fishW/3 && playerX + playerW / 3 >= xPos && 
+            playerY + playerH / 3 >= yPos && playerY <= yPos + fishH / 3) {
                 gameOver = true;
             }
     })
     fishArray = nextFish;   
 }
+
 function drawJellyfish(){
     const nextJellyfish = [];
     jellyfishArray.forEach(jellyfish => {
@@ -154,8 +164,6 @@ function drawJellyfish(){
             } else {
                 nextJellyfish.push(jellyfish);
             }
-
-        console.log(life)
         if(life <= 0){
             gameOver = true;
         }
@@ -178,8 +186,8 @@ function drawPlankton(){
                    playerH = 80;
                    playerW = 100;
                } else {
-                playerH *= 1.1;
-                playerW *= 1.1;
+                playerH *= 1.05;
+                playerW *= 1.05;
                }
                
             } else {
@@ -232,13 +240,7 @@ function animate(){
     drawPlankton()
     drawScore()
     
-    if(score > 5) {
-        drawLife()
-        if(jellyfishArray.length < 1) {
-            jellyfishArray.push(new Jellyfish)
-        }
-        drawJellyfish()
-    }
+    
     if(gameOver){
         if (score > bestScore) {
             bestScore = score;
@@ -246,6 +248,13 @@ function animate(){
         cancelAnimationFrame(animationId)
         gameOverScreen()
     } else {
+        if(score > 5) {
+            drawLife()
+            if(jellyfishArray.length < 1) {
+                jellyfishArray.push(new Jellyfish)
+            }
+            drawJellyfish()
+        }
         animationId = requestAnimationFrame(animate);
     }
 }
@@ -267,6 +276,7 @@ function restartGame(){
     gameOver = false;
     fishArray = [];
     foodsArray = [];
+    jellyfishArray = [];   
     score = 0;
     playerH = 80;
     playerW = 80;

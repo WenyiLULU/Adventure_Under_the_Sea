@@ -46,7 +46,8 @@ body {
 #game-board {
     margin:50px auto;
     position:fixed; 
-    z-index:2
+    z-index:2;
+    cursor: none;
 }
 
 #game-over-screen {
