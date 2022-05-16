@@ -6,13 +6,16 @@ body {
 }
 
 #start-screen {
-    height: 900px;
-    width: 1000px;
-    margin: 100px auto;
+    height: 800px;
+    width: 1200px;
+    margin: 50px auto;
+    position:fixed;
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction:column;
-
+    background-image: url("./image/bg_start.png");
+    background-size: cover;
 }
 
 #start-background {
@@ -22,9 +25,7 @@ body {
 }
 
 #start-message {
-    position:relative; 
-    bottom:500px; 
-    left:200px;
+    
     padding: 50px auto;
     display: flex;
     flex-direction: column;
@@ -37,15 +38,14 @@ body {
     background-color: transparent;
     border-radius: 50%;
     position:relative; 
-    bottom:250px; 
-    left:840px; 
+    top:180px; 
+    left:470px; 
     z-index:1 
 }
 
-#canvas {
-    position:absolute; 
-    top:50px; 
-    left:50px; 
+#game-board {
+    margin:50px auto;
+    position:fixed; 
     z-index:2
 }
- 
+
