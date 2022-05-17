@@ -1,10 +1,12 @@
 // --- get elements ---
 const gameBoard = document.getElementById('game-board')
 const gameOverBoard = document.getElementById('game-over-screen')
+const levelUpScreen = document.getElementById('levelup-screen')
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const startBtn = document.getElementById('start-button');
 const restartBtn = document.getElementById('restart');
+const continuBtn = document.getElementById('continu');
 
 // --- imput images ---
 const bgImg = new Image();
@@ -31,6 +33,10 @@ jellyfishImg.src = './image/d2_jellyfish.png';
 let animationId;
 let gameOver = false;
 const scoreLevel = [6, 16]
+const levelScreenX = canvas.width / 4;
+const levelScreenY = canvas.height / 4;
+const levelScreenW = canvas.width / 2;
+const levelScreenH = canvas.height / 2;
 
 // --- scores and life ---
 let score = 0;
@@ -50,8 +56,7 @@ const fishSpeed = -3;
 let fishArray = [];
 const jellyfishHeight = 200;
 const jellyfishWidth = 100;
-let jellyfishSpeedR = 0.5;
-let jellyfishSpeedD = 1;
+
 
 
 // --- food setting ---
@@ -78,27 +83,30 @@ class Jellyfish {
         this.fishH = jellyfishHeight;
         this.xPos = -(jellyfishWidth);
         this.yPos = Math.floor(Math.random()*(canvas.height/4));
+        this.jellyfishSpeedR = 0.5;
+        this.jellyfishSpeedD = 1;
     }
     move (){
-        if(this.xPos + this.fishW > canvas.width || this.xPos < -(jellyfishWidth)){
-            jellyfishSpeedR *= -1}
+        if(this.xPos + this.fishW > canvas.width + playerW*2|| this.xPos < -(jellyfishWidth)){
+            this.jellyfishSpeedR *= -1}
     
-        this.xPos += jellyfishSpeedR;
+        this.xPos += this.jellyfishSpeedR;
         if(this.yPos + this.fishH > canvas.height*3/4 || this.yPos < 0){
-            jellyfishSpeedD *= -1;
+            this.jellyfishSpeedD *= -1;
         } 
-        this.yPos += jellyfishSpeedD;
+        this.yPos += this.jellyfishSpeedD;
     }
 }
 let jellyfishArray = [];
 
 // --- foods ---
 class Plankton {
-    constructor(){
+    constructor(kind){
         this.planktonH = planktonHeight;
         this.planktonW = planktonWeight;
         this.xPos = Math.floor(Math.random()*(canvas.width - this.planktonW));
         this.yPos = -(this.planktonH);
+        this.kind = kind;
     }
     move (){
         this.yPos += planktonSpeed;
@@ -141,16 +149,16 @@ function drawFish(){
             fish.fishH = fishHeight * 1.2
             ctx.drawImage(fishL, xPos, yPos, fishW, fishH);
         } else {
-            fish.fishW = fishWidth * 2
-            fish.fishH = fishHeight * 1.5
+            fish.fishW = fishWidth * 3.5
+            fish.fishH = fishHeight * 2.5
             ctx.drawImage(shark, xPos, yPos, fishW, fishH);
         }
 
         if (xPos > -(fishW)) {
             nextFish.push(fish);
         }
-        if (playerX <= xPos + fishW / 3 * 2 && playerX + playerW / 3 * 2 >= xPos && 
-            playerY + playerH / 3 * 2 >= yPos && playerY <= yPos + fishH / 3 * 2) {
+        if (playerX <= xPos + fishW / 4 * 2 && playerX + playerW / 4 * 3 >= xPos && 
+            playerY + playerH / 4 * 3 >= yPos && playerY <= yPos + fishH / 4 * 3) {
                 gameOver = true;
             }
     })
@@ -184,19 +192,19 @@ function drawPlankton(){
     const nexPlankton = [];
     foodsArray.forEach(food => {
         food.move();
-        const {xPos, yPos, planktonW, planktonH} = food;
-        ctx.drawImage(plankton, xPos, yPos, planktonW, planktonH);
+        const {xPos, yPos, planktonW, planktonH, kind} = food;
+        if(kind === 'shrimp'){
+            ctx.drawImage(shrimp, xPos, yPos, planktonW, planktonH);      
+        } else {
+            ctx.drawImage(plankton, xPos, yPos, planktonW, planktonH);
+        }
         
         if (playerX <= xPos + planktonW && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + planktonH) {
-               score += 1;
-               if(score === 6 || score === 16) {
-                   playerH = 80;
-                   playerW = 100;
-               } else {
+               if(kind === 'plankton'){score += 1;}
+               else {score += 2}
                 playerH *= 1.05;
                 playerW *= 1.05;
-               }
             } else {
                 if (yPos > -planktonH) {
                     nexPlankton.push(food);
@@ -237,16 +245,30 @@ function drawLife(){
 function animate(){
     drawBackground()
     drawPlayer()
-    if (animationId % 130 === 0) {
-        fishArray.push(new Fish)
+    if(score <= 15){
+        if (animationId % 130 === 0) {
+            fishArray.push(new Fish)
+        }
+    } else {
+        if (animationId % 300 === 0) {
+            fishArray.push(new Fish)
+        }
     }
+    
     if (animationId % 100 === 0) {
-        foodsArray.push(new Plankton)
+        if(score > 16){
+            if(Math.floor(Math.random()*4) === 3){
+                foodsArray.push(new Plankton('shrimp'))
+            }else{
+            foodsArray.push(new Plankton('plankton'))
+            }            
+        }else{
+            foodsArray.push(new Plankton('plankton'))
+        }
     }
     drawFish()
     drawPlankton()
     drawScore()
-    
     
     if(gameOver){
         if (score > bestScore) {
@@ -254,12 +276,15 @@ function animate(){
           }
         cancelAnimationFrame(animationId)
         gameOverScreen()
-    } else {
+    } 
+    
+    else if (score === 6 || score === 16){
+        cancelAnimationFrame(animationId)
+        drawLevelUp()
+    }
+    else {
         if(score > 5) {
             drawLife()
-            if(jellyfishArray.length < 1) {
-                jellyfishArray.push(new Jellyfish)
-            }
             drawJellyfish()
         }
         animationId = requestAnimationFrame(animate);
@@ -279,6 +304,24 @@ function gameOverScreen(){
         gameOverBoard.querySelector('#record').innerHTML = `Your record is ${bestScore}.`
     }, 1000)
 }
+function drawLevelUp(){
+    let playerImage, dangerImage
+    window.setTimeout(()=> {
+        if(score === 6){
+            playerImage = `<image src=${fishPlayer.src} alt="fish" style="height: 40px; width: 50px"/>`;
+            dangerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
+        }else {
+            playerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
+            dangerImage = `<image src=${shark.src} alt="shark" style="height: 40px; width: 50px"/>`;
+        }
+
+        levelUpScreen.style.visibility = "visible";
+        levelUpScreen.querySelector('#new-player').innerHTML = `Now you evolve to a fish ${playerImage}`
+        levelUpScreen.querySelector('#life').innerHTML = `You will have 3 points of life.`
+        levelUpScreen.querySelector('#new-danger').innerHTML = `Be careful of the jellyfishie <image src="./image/d2_jellyfish.png" alt="jellyfish" style="height: 50px; width: 25px"/> It will make you lose 1 point of life. And if you get catched by ${dangerImage}, you will die !`
+    }, 500)
+
+}
 function restartGame(){
     gameOver = false;
     fishArray = [];
@@ -291,11 +334,22 @@ function restartGame(){
 
     startGame()
 }
+function continu(){
+    score += 1
+    levelUpScreen.style.visibility="hidden";
+    fishArray = [];
+    foodsArray = [];
+    playerH = 80;
+    playerW = 100;
+    jellyfishArray.push(new Jellyfish)
+    animate()
+}
 
 // --- listeners ---
 window.addEventListener("load", () => {
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
+    levelUpScreen.style.visibility="hidden";
     startBtn.addEventListener("click", () => {
       startGame();
     }); 
@@ -314,5 +368,9 @@ window.addEventListener("load", () => {
 
     restartBtn.addEventListener("click", () => {
         restartGame();
-    })
+    });
+
+    continuBtn.addEventListener("click", () => {
+        continu();
+    });
   });
