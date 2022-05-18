@@ -22,25 +22,25 @@ body {
 
 #start-background {
     width: 100%;
-    height: 100%;
-    z-index:0 
+    height: 100%; 
 }
 
 #start-message {
-    
-    padding: 50px auto;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 #start-button{
+    font-family: 'Allerta Stencil';
     height: 80px;
     width: 80px;
-    background-color: transparent;
+    background-color: rgba(135,206,235, 0.7);
+    font-size: 20px;
     border-radius: 50%;
     position:relative; 
-    top:180px; 
+    top:50px; 
     left:470px; 
     z-index:1 
 }
@@ -48,7 +48,7 @@ body {
 #game-board {
     margin:50px auto;
     position:fixed; 
-    z-index:2;
+    
     cursor: none;
 }
 
@@ -64,14 +64,33 @@ body {
     flex-direction:column;
     background-image: url("./image/game_over_screan.jpg");
     background-size: cover;
-    z-index:3
+    
 }
-
 #game-over-message {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+#game-over-screen button {
+    font-family: 'Allerta Stencil';
+    color: white;
+    font-size: medium;
+    margin: 15px;
+    border-radius: 20%;
+    height: 40px;
+    width: 100px;
+    background-color: rgba(135,206,235, 0.7);
+    cursor: pointer;
+    box-shadow: 3px 3px #999;
+}
+#game-over-screen button:hover{
+    background-color: navy;
+}
+#game-over-screen button:active{
+    background-color: navy;
+    box-shadow: 1px 1px #666;
+    transform: translateY(4px);
 }
 
 #levelup-screen{
@@ -84,8 +103,8 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction:column;
-    background-color: rgba(255, 255, 255, 0.7); 
-    z-index:4
+    background-color: rgba(255, 255, 255, 0.8); 
+    
 }
 #levelup-message {
     display: flex;
@@ -96,7 +115,7 @@ body {
 
 p {
     display: flex;
-    align-items: baseline;
+    align-items: center;
 }
 
 #sound {

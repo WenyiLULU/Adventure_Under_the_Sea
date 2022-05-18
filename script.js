@@ -30,6 +30,8 @@ const fishPlayer = new Image();
 fishPlayer.src = './image/p2_fish.png';
 const jellyfishImg = new Image();
 jellyfishImg.src = './image/d2_jellyfish.png';
+const heart = new Image();
+heart.src = './image/life_heart.png';
 
 //--- music control ---
 const startMusic = document.getElementById('start-music');
@@ -341,17 +343,19 @@ function drawLevelUp(){
     let playerImage, dangerImage
     window.setTimeout(()=> {
         if(level <= 2){
-            playerImage = `<image src=${fishPlayer.src} alt="fish" style="height: 40px; width: 50px"/>`;
-            dangerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
+            playerImage = `<image src=${fishPlayer.src} alt="fish" style="height: 50px; width: 70px"/>`;
+            dangerImage = `<image src=${fishL.src} alt="big fish" style="height: 50px; width: 70px"/>`;
+            levelUpScreen.querySelector('#life').innerHTML = `You will have 3 points of life. <image src=${heart.src} alt="big fish" style="height: 50px; width: 50px"/>`
         }else {
-            playerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
-            dangerImage = `<image src=${shark.src} alt="shark" style="height: 40px; width: 50px"/>`;
+            playerImage = `<image src=${fishL.src} alt="big fish" style="height: 50px; width: 70px"/>`;
+            dangerImage = `<image src=${shark.src} alt="shark" style="height: 50px; width: 70px"/>`;
+            levelUpScreen.querySelector('#life').innerHTML = `Be attention to your points of life.`
         }
 
         levelUpScreen.style.visibility = "visible";
-        levelUpScreen.querySelector('#new-player').innerHTML = `Now you evolve to a fish ${playerImage}`
-        levelUpScreen.querySelector('#life').innerHTML = `You will have 3 points of life.`
-        levelUpScreen.querySelector('#new-danger').innerHTML = `Be careful of the jellyfishie <image src="./image/d2_jellyfish.png" alt="jellyfish" style="height: 50px; width: 25px"/> It will make you lose 1 point of life. And if you get catched by ${dangerImage}, you will die !`
+        levelUpScreen.querySelector('#new-player').innerHTML = `Now you evolve to ${playerImage}`
+        levelUpScreen.querySelector('#new-danger1').innerHTML = `Be careful of  <image src="./image/d2_jellyfish.png" alt="jellyfish" style="height: 50px; width: 30px"/>! It will make you lose 1 point of life. `
+        levelUpScreen.querySelector('#new-danger2').innerHTML = `ATTENTION : If you get catched by ${dangerImage}, you will DIE !`
     }, 500)
 
 }
