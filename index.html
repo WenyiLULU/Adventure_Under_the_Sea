@@ -11,14 +11,14 @@
 <body>
     <div id="start-screen">
         <article id="start-message">
-            <h1>Aventure Under The Sea</h1>
-            <p>Don't die !!</p>
+            <h1>Adventure Under The Sea</h1>
+            <h2>Don't die !!</h2>
             <p id="fin-score"></p>
             <p id="last-record"></p>
         </article>
         <button id="start-button">START</button>
         <audio id="background-music" src="./music/bg_music.wav" loop="true"></audio>
-        <audio id="start-music" src="./music/wave_start.mp3" loop="true" autoplay></audio>
+        <audio id="start-music" src="./music/wave_start.mp3" loop="true"></audio>
     </div>
     
     <div id="game-board">
@@ -31,7 +31,8 @@
             <p id="score"></p>
             <p id="record"></p>
         </article>
-        <button id="restart">Try again</button>
+        <button id="restart" class="navi-button">Try again</button>
+        <button id="goback" class="navi-button">Next time</button>
     </div>
 
     <div id="levelup-screen">
@@ -39,9 +40,11 @@
             <h1>Great you got evolution !</h1>
             <p id="new-player"></p>
             <p id="life"></p>
-            <p id="new-danger"></p>
+            <p id="new-danger1"></p>
+            <p id="new-danger2"></p>
+
         </article>
-        <button id="continu">Continu the aventure</button>
+        <button id="continu" class="navi-button">Ready to GO !</button>
     </div>
     <div id="sound">
         <div id="sound-icon"><image src="./image/sound_on.png" style="height: 50px; width:50px"></div>

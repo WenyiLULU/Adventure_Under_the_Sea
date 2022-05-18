@@ -1,12 +1,14 @@
 // --- get elements ---
-const gameBoard = document.getElementById('game-board')
-const gameOverBoard = document.getElementById('game-over-screen')
-const levelUpScreen = document.getElementById('levelup-screen')
+const homeScreen = document.getElementById('start-screen');
+const gameBoard = document.getElementById('game-board');
+const gameOverBoard = document.getElementById('game-over-screen');
+const levelUpScreen = document.getElementById('levelup-screen');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const startBtn = document.getElementById('start-button');
 const restartBtn = document.getElementById('restart');
 const continuBtn = document.getElementById('continu');
+const goBackBtn = document.getElementById('goback');
 const volumeUpBtn = document.getElementById('up');
 const volumeDownBtn = document.getElementById('down');
 const volumeMute = document.getElementById('mute');
@@ -30,6 +32,8 @@ const fishPlayer = new Image();
 fishPlayer.src = './image/p2_fish.png';
 const jellyfishImg = new Image();
 jellyfishImg.src = './image/d2_jellyfish.png';
+const heart = new Image();
+heart.src = './image/life_heart.png';
 
 //--- music control ---
 const startMusic = document.getElementById('start-music');
@@ -341,21 +345,23 @@ function drawLevelUp(){
     let playerImage, dangerImage
     window.setTimeout(()=> {
         if(level <= 2){
-            playerImage = `<image src=${fishPlayer.src} alt="fish" style="height: 40px; width: 50px"/>`;
-            dangerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
+            playerImage = `<image src=${fishPlayer.src} alt="fish" style="height: 50px; width: 70px"/>`;
+            dangerImage = `<image src=${fishL.src} alt="big fish" style="height: 50px; width: 70px"/>`;
+            levelUpScreen.querySelector('#life').innerHTML = `You will have 3 points of life. <<image src=${heart.src} alt="big fish" style="height: 50px; width: 50px"/>>`
         }else {
-            playerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
-            dangerImage = `<image src=${shark.src} alt="shark" style="height: 40px; width: 50px"/>`;
+            playerImage = `<image src=${fishL.src} alt="big fish" style="height: 50px; width: 70px"/>`;
+            dangerImage = `<image src=${shark.src} alt="shark" style="height: 50px; width: 70px"/>`;
+            levelUpScreen.querySelector('#life').innerHTML = `Be attention to your points of life.`
         }
 
         levelUpScreen.style.visibility = "visible";
-        levelUpScreen.querySelector('#new-player').innerHTML = `Now you evolve to a fish ${playerImage}`
-        levelUpScreen.querySelector('#life').innerHTML = `You will have 3 points of life.`
-        levelUpScreen.querySelector('#new-danger').innerHTML = `Be careful of the jellyfishie <image src="./image/d2_jellyfish.png" alt="jellyfish" style="height: 50px; width: 25px"/> It will make you lose 1 point of life. And if you get catched by ${dangerImage}, you will die !`
+        levelUpScreen.querySelector('#new-player').innerHTML = `Now you evolve to < ${playerImage}>`
+        levelUpScreen.querySelector('#new-danger1').innerHTML = `Be careful of < <image src="./image/d2_jellyfish.png" alt="jellyfish" style="height: 60px; width: 40px"/> >! It will make you lose 1 point of life. `
+        levelUpScreen.querySelector('#new-danger2').innerHTML = `ATTENTION : If you get catched by <${dangerImage}>, you will DIE !`
     }, 500)
 
 }
-function restartGame(){
+function reset(){
     gameOver = false;
     fishArray = [];
     foodsArray = [];
@@ -365,7 +371,9 @@ function restartGame(){
     playerH = 80;
     playerW = 80;
     gameOverBoard.style.visibility= "hidden";
-
+}
+function restartGame(){
+    reset()
     startGame()
 }
 function continu(){
@@ -381,6 +389,15 @@ function continu(){
     jellyfishArray.push(new Jellyfish)
     animate()
 }
+function goBack(){
+    startMusic.play();
+    gameBoard.style.display = "none";
+    gameOverBoard.style.visibility= "hidden";
+    levelUpScreen.style.visibility="hidden";
+    homeScreen.querySelector('#fin-score').innerHTML = `Your score is ${score}`
+    homeScreen.querySelector('#last-record').innerHTML = `Your record is ${bestScore}.`
+    reset()
+}
 function setVolume(){
     startMusic.volume = soundVolume;
     bgMusic.volume = soundVolume;
@@ -394,7 +411,8 @@ window.addEventListener("load", () => {
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
-    setVolume()
+    setVolume();
+    startMusic.play();
 
     startBtn.addEventListener("click", () => {
       startGame();
@@ -415,6 +433,9 @@ window.addEventListener("load", () => {
     });
     continuBtn.addEventListener("click", () => {
         continu();
+    });
+    goBackBtn.addEventListener("click", () => {
+        goBack();
     });
     volumeUpBtn.addEventListener("click", () => {
         soundVolume += 0.1;

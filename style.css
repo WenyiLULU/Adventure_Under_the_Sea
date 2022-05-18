@@ -22,25 +22,40 @@ body {
 
 #start-background {
     width: 100%;
-    height: 100%;
-    z-index:0 
+    height: 100%; 
 }
 
 #start-message {
-    
-    padding: 50px auto;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-
+#start-message h1 {
+    margin: 10px auto;
+    font-size: 55px;
+    color: navy;
+    text-shadow: 3px 3px lightslategray; 
+}
+#start-message h2 {
+    margin: 5px auto;
+    font-size: 55px;
+    color: rgb(248, 72, 41);
+    text-shadow: 3px 3px red;
+}
+#start-message p {
+    font-size: 25px;
+    margin: 5px auto;
+}
 #start-button{
+    font-family: 'Allerta Stencil';
     height: 80px;
     width: 80px;
-    background-color: transparent;
+    background-color: rgba(135,206,235, 0.7);
+    font-size: 20px;
     border-radius: 50%;
     position:relative; 
-    top:180px; 
+    top:50px; 
     left:470px; 
     z-index:1 
 }
@@ -48,7 +63,7 @@ body {
 #game-board {
     margin:50px auto;
     position:fixed; 
-    z-index:2;
+    
     cursor: none;
 }
 
@@ -64,14 +79,33 @@ body {
     flex-direction:column;
     background-image: url("./image/game_over_screan.jpg");
     background-size: cover;
-    z-index:3
+    
 }
-
 #game-over-message {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+.navi-button {
+    font-family: 'Allerta Stencil';
+    color: white;
+    font-size: medium;
+    margin: 15px;
+    border-radius: 20%;
+    height: 40px;
+    width: 300px;
+    background-color: rgba(79, 120, 233, 0.7);
+    cursor: pointer;
+    box-shadow: 3px 3px #999;
+}
+.navi-button:hover{
+    background-color: navy;
+}
+.navi-button:active{
+    background-color: navy;
+    box-shadow: 1px 1px #666;
+    transform: translateY(4px);
 }
 
 #levelup-screen{
@@ -84,9 +118,9 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction:column;
-    background-color: rgba(255, 255, 255, 0.7); 
-    z-index:4
+    background-color: rgba(255, 255, 255, 0.8);     
 }
+
 #levelup-message {
     display: flex;
     justify-content: center;
@@ -96,7 +130,7 @@ body {
 
 p {
     display: flex;
-    align-items: baseline;
+    align-items: center;
 }
 
 #sound {
