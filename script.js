@@ -265,19 +265,19 @@ function getMousePos(canvas, evt) {
 // --- draw score ---
 function drawScore() {
     ctx.beginPath();
-    ctx.font = "30px sans-serif";
-    ctx.fillStyle = "orange";
+    ctx.font = "30px Allerta Stencil";
+    ctx.fillStyle = "navy";
     ctx.fillText(`Score : ${score}`, 1000, 50);
     ctx.closePath();
   }
 
 // --- draw life ---
 function drawLife(){
-    ctx.beginPath();
-    ctx.font = "30px sans-serif";
-    ctx.fillStyle = "tomato";
-    ctx.fillText(`Life : ${life}`, 50, 50);
-    ctx.closePath();
+    let heartX = 30;
+    for (let i=0; i<life; i+=1){
+        ctx.drawImage(heart, heartX, 30, 50, 50);
+        heartX += 55;
+    }
 }
 
 // --- animate ---
@@ -308,7 +308,6 @@ function animate(){
         cancelAnimationFrame(animationId)
         gameOverScreen()
     } 
-    
     else if ((level === 1 && score > 5) || (level === 2 && score > 15)){
         cancelAnimationFrame(animationId)
         drawLevelUp()
@@ -359,7 +358,6 @@ function drawLevelUp(){
         levelUpScreen.querySelector('#new-danger1').innerHTML = `Be careful of < <image src="./image/d2_jellyfish.png" alt="jellyfish" style="height: 60px; width: 40px"/> >! It will make you lose 1 point of life. `
         levelUpScreen.querySelector('#new-danger2').innerHTML = `ATTENTION : If you get catched by <${dangerImage}>, you will DIE !`
     }, 500)
-
 }
 function reset(){
     gameOver = false;
@@ -368,6 +366,7 @@ function reset(){
     jellyfishArray = [];   
     level = 1;
     score = 0;
+    life = 3;
     playerH = 80;
     playerW = 80;
     gameOverBoard.style.visibility= "hidden";
@@ -377,7 +376,6 @@ function restartGame(){
     startGame()
 }
 function continu(){
-    score += 1
     levelUpScreen.style.visibility="hidden";
     fishArray = [];
     foodsArray = [];
