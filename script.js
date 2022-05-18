@@ -28,6 +28,13 @@ fishPlayer.src = './image/p2_fish.png';
 const jellyfishImg = new Image();
 jellyfishImg.src = './image/d2_jellyfish.png';
 
+//--- music control ---
+const startMusic = document.getElementById('start-music');
+const bgMusic = document.getElementById('background-music');
+const gameOverSound = new Audio('./music/game-over.mp3');
+const biteSound = new Audio('./music/bite.mp3');
+
+
 
 // --- animate control ---
 let animationId;
@@ -160,6 +167,9 @@ function drawFish(){
         if (playerX <= xPos + fishW / 4 * 2 && playerX + playerW / 4 * 3 >= xPos && 
             playerY + playerH / 4 * 3 >= yPos && playerY <= yPos + fishH / 4 * 3) {
                 gameOver = true;
+                bgMusic.pause();
+                gameOverSound.play();
+                
             }
     })
     fishArray = nextFish;   
@@ -182,6 +192,8 @@ function drawJellyfish(){
             }
         if(life <= 0){
             gameOver = true;
+            bgMusic.pause();
+            gameOverSound.play();
         }
     })
     jellyfishArray = nextJellyfish;   
@@ -201,7 +213,13 @@ function drawPlankton(){
         
         if (playerX <= xPos + planktonW && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + planktonH) {
-               if(kind === 'plankton'){score += 1;}
+                biteSound.play();
+                window.setTimeout(()=> {
+                    biteSound.pause();
+                    biteSound.currentTime = 0;
+                }, 1000);
+
+                if(kind === 'plankton'){score += 1;}
                else {score += 2}
                 playerH *= 1.05;
                 playerW *= 1.05;
@@ -294,6 +312,8 @@ function animate(){
 // --- game status ---
 function startGame(){
     gameBoard.style.display = "block";
+    startMusic.pause();
+    bgMusic.play()
     animate()
 }
 function gameOverScreen(){
@@ -350,6 +370,7 @@ window.addEventListener("load", () => {
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
+    
     startBtn.addEventListener("click", () => {
       startGame();
     }); 
