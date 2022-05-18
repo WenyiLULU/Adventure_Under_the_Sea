@@ -7,6 +7,9 @@ const ctx = canvas.getContext('2d');
 const startBtn = document.getElementById('start-button');
 const restartBtn = document.getElementById('restart');
 const continuBtn = document.getElementById('continu');
+const volumeUpBtn = document.getElementById('up');
+const volumeDownBtn = document.getElementById('down');
+const volumeMute = document.getElementById('mute');
 
 // --- imput images ---
 const bgImg = new Image();
@@ -34,6 +37,7 @@ const bgMusic = document.getElementById('background-music');
 const levelupMusic = new Audio('./music/levelup.mp3');
 const gameOverSound = new Audio('./music/game-over.mp3');
 const biteSound = new Audio('./music/bite-short.mp3');
+soundVolume = 0.1;
 
 // --- animate control ---
 let animationId;
@@ -377,17 +381,24 @@ function continu(){
     jellyfishArray.push(new Jellyfish)
     animate()
 }
+function setVolume(){
+    startMusic.volume = soundVolume;
+    bgMusic.volume = soundVolume;
+    biteSound.volume = soundVolume;
+    levelupMusic.volume = soundVolume;
+    gameOverSound.volume = soundVolume;
+}
 
 // --- listeners ---
 window.addEventListener("load", () => {
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
-    
+    setVolume()
+
     startBtn.addEventListener("click", () => {
       startGame();
     }); 
-
     canvas.addEventListener("mousemove", function(event) { 
         let cRect = canvas.getBoundingClientRect();              
         // Gets the CSS positions along with width/height
@@ -399,12 +410,29 @@ window.addEventListener("load", () => {
         playerY = canvasY;
         
     });
-
     restartBtn.addEventListener("click", () => {
         restartGame();
     });
-
     continuBtn.addEventListener("click", () => {
         continu();
     });
+    volumeUpBtn.addEventListener("click", () => {
+        soundVolume += 0.1;
+        setVolume()
+    })
+    volumeDownBtn.addEventListener("click", () => {
+        soundVolume -= 0.1;
+        setVolume()
+    })
+    volumeMute.addEventListener("click", () => {
+        if(soundVolume != 0){
+            soundVolume = 0;
+            volumeMute.innerHTML = "ON";
+        }
+        else{
+            soundVolume = 0.3;
+            volumeMute.innerHTML = "OFF";
+        };
+        setVolume()
+    })
   });

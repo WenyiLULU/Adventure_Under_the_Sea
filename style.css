@@ -1,4 +1,6 @@
 body {
+    font-family: 'Allerta Stencil';
+    font-size: 22px;
     display: flex;
     justify-content: center;
     margin : 0;
@@ -95,4 +97,21 @@ body {
 p {
     display: flex;
     align-items: baseline;
+}
+
+#sound {
+    height: 80px;
+    width: 300px;
+    margin: 5px auto;
+    position: fixed;
+    bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+#sound button{
+    height: 40px;
+    width: 40px;
+    font-size: larg;
 }
