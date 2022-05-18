@@ -49,11 +49,15 @@ body {
 }
 #start-button{
     font-family: 'Allerta Stencil';
+    color :navy;
+    font-weight: bold;
+    text-shadow: #666;
     height: 80px;
     width: 80px;
     background-color: rgba(135,206,235, 0.7);
     font-size: 20px;
     border-radius: 50%;
+    cursor: pointer;
     position:relative; 
     top:50px; 
     left:470px; 
