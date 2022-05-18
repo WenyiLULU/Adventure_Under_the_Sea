@@ -31,6 +31,7 @@ jellyfishImg.src = './image/d2_jellyfish.png';
 //--- music control ---
 const startMusic = document.getElementById('start-music');
 const bgMusic = document.getElementById('background-music');
+const levelupMusic = new Audio('./music/levelup.mp3');
 const gameOverSound = new Audio('./music/game-over.mp3');
 const biteSound = new Audio('./music/bite2.mp3');
 
