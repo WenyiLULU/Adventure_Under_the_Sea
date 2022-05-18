@@ -32,14 +32,12 @@ jellyfishImg.src = './image/d2_jellyfish.png';
 const startMusic = document.getElementById('start-music');
 const bgMusic = document.getElementById('background-music');
 const gameOverSound = new Audio('./music/game-over.mp3');
-const biteSound = new Audio('./music/bite.mp3');
-
-
+const biteSound = new Audio('./music/bite2.mp3');
 
 // --- animate control ---
 let animationId;
 let gameOver = false;
-const scoreLevel = [6, 16]
+let level = 1;
 const levelScreenX = canvas.width / 4;
 const levelScreenY = canvas.height / 4;
 const levelScreenW = canvas.width / 2;
@@ -63,8 +61,6 @@ const fishSpeed = -3;
 let fishArray = [];
 const jellyfishHeight = 200;
 const jellyfishWidth = 100;
-
-
 
 // --- food setting ---
 const planktonHeight = 50;
@@ -207,7 +203,9 @@ function drawPlankton(){
         const {xPos, yPos, planktonW, planktonH, kind} = food;
         if(kind === 'shrimp'){
             ctx.drawImage(shrimp, xPos, yPos, planktonW, planktonH);      
-        } else {
+        } else if(kind === 'fish'){
+            ctx.drawImage(fishS, xPos, yPos, planktonW, planktonH);      
+        } else{
             ctx.drawImage(plankton, xPos, yPos, planktonW, planktonH);
         }
         
@@ -220,7 +218,8 @@ function drawPlankton(){
                 }, 1000);
 
                 if(kind === 'plankton'){score += 1;}
-               else {score += 2}
+               else if(kind === 'shrimp') {score += 2;}
+               else{score +=3}
                 playerH *= 1.05;
                 playerW *= 1.05;
             } else {
@@ -230,6 +229,24 @@ function drawPlankton(){
             }
     })
     foodsArray = nexPlankton; 
+}
+function drawRandomFood(){
+    if(level > 2){
+        if(Math.floor(Math.random()*5) === 4){
+            foodsArray.push(new Plankton('fish'))
+        }else{
+        foodsArray.push(new Plankton('shrimp'))
+        }       
+    }else if(level > 1){
+        if(Math.floor(Math.random()*4) === 3){
+            foodsArray.push(new Plankton('shrimp'))
+        }else{
+        foodsArray.push(new Plankton('plankton'))
+        } 
+    }
+    else{
+        foodsArray.push(new Plankton('plankton'))
+    }
 }
 
 // --- get mouse position ---
@@ -274,15 +291,7 @@ function animate(){
     }
     
     if (animationId % 100 === 0) {
-        if(score > 16){
-            if(Math.floor(Math.random()*4) === 3){
-                foodsArray.push(new Plankton('shrimp'))
-            }else{
-            foodsArray.push(new Plankton('plankton'))
-            }            
-        }else{
-            foodsArray.push(new Plankton('plankton'))
-        }
+        drawRandomFood()
     }
     drawFish()
     drawPlankton()
@@ -296,12 +305,12 @@ function animate(){
         gameOverScreen()
     } 
     
-    else if (score === 6 || score === 16){
+    else if ((level === 1 && score > 5) || (level === 2 && score > 15)){
         cancelAnimationFrame(animationId)
         drawLevelUp()
     }
     else {
-        if(score > 5) {
+        if(level > 1) {
             drawLife()
             drawJellyfish()
         }
@@ -325,9 +334,10 @@ function gameOverScreen(){
     }, 1000)
 }
 function drawLevelUp(){
+    level += 1;
     let playerImage, dangerImage
     window.setTimeout(()=> {
-        if(score === 6){
+        if(level <= 2){
             playerImage = `<image src=${fishPlayer.src} alt="fish" style="height: 40px; width: 50px"/>`;
             dangerImage = `<image src=${fishL.src} alt="big fish" style="height: 40px; width: 50px"/>`;
         }else {
@@ -347,6 +357,7 @@ function restartGame(){
     fishArray = [];
     foodsArray = [];
     jellyfishArray = [];   
+    level = 1;
     score = 0;
     playerH = 80;
     playerW = 80;
