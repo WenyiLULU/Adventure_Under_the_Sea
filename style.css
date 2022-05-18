@@ -87,22 +87,22 @@ body {
     align-items: center;
     flex-direction: column;
 }
-#game-over-screen button {
+.navi-button {
     font-family: 'Allerta Stencil';
     color: white;
     font-size: medium;
     margin: 15px;
     border-radius: 20%;
     height: 40px;
-    width: 100px;
-    background-color: rgba(135,206,235, 0.7);
+    width: 300px;
+    background-color: rgba(79, 120, 233, 0.7);
     cursor: pointer;
     box-shadow: 3px 3px #999;
 }
-#game-over-screen button:hover{
+.navi-button:hover{
     background-color: navy;
 }
-#game-over-screen button:active{
+.navi-button:active{
     background-color: navy;
     box-shadow: 1px 1px #666;
     transform: translateY(4px);
@@ -118,9 +118,9 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction:column;
-    background-color: rgba(255, 255, 255, 0.8); 
-    
+    background-color: rgba(255, 255, 255, 0.8);     
 }
+
 #levelup-message {
     display: flex;
     justify-content: center;
