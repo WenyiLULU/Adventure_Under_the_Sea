@@ -278,11 +278,6 @@ function drawLife(){
         ctx.drawImage(heart, heartX, 30, 50, 50);
         heartX += 55;
     }
-    /*ctx.beginPath();
-    ctx.font = "30px sans-serif";
-    ctx.fillStyle = "tomato";
-    ctx.fillText(`Life : ${life}`, 50, 50);
-    ctx.closePath();*/
 }
 
 // --- animate ---
@@ -313,7 +308,6 @@ function animate(){
         cancelAnimationFrame(animationId)
         gameOverScreen()
     } 
-    
     else if ((level === 1 && score > 5) || (level === 2 && score > 15)){
         cancelAnimationFrame(animationId)
         drawLevelUp()
