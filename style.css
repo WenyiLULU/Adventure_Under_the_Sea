@@ -32,13 +32,16 @@ body {
     justify-content: center;
 }
 #start-message h1 {
-    font-size: 55px;
     margin: 10px auto;
+    font-size: 55px;
+    color: navy;
+    text-shadow: 3px 3px lightslategray; 
 }
 #start-message h2 {
-    font-size: 55px;
     margin: 5px auto;
+    font-size: 55px;
     color: rgb(248, 72, 41);
+    text-shadow: 3px 3px red;
 }
 #start-message p {
     font-size: 25px;
