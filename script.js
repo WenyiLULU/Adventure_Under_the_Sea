@@ -1,12 +1,14 @@
 // --- get elements ---
-const gameBoard = document.getElementById('game-board')
-const gameOverBoard = document.getElementById('game-over-screen')
-const levelUpScreen = document.getElementById('levelup-screen')
+const homeScreen = document.getElementById('start-screen');
+const gameBoard = document.getElementById('game-board');
+const gameOverBoard = document.getElementById('game-over-screen');
+const levelUpScreen = document.getElementById('levelup-screen');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const startBtn = document.getElementById('start-button');
 const restartBtn = document.getElementById('restart');
 const continuBtn = document.getElementById('continu');
+const goBackBtn = document.getElementById('goback');
 const volumeUpBtn = document.getElementById('up');
 const volumeDownBtn = document.getElementById('down');
 const volumeMute = document.getElementById('mute');
@@ -359,7 +361,7 @@ function drawLevelUp(){
     }, 500)
 
 }
-function restartGame(){
+function reset(){
     gameOver = false;
     fishArray = [];
     foodsArray = [];
@@ -369,7 +371,9 @@ function restartGame(){
     playerH = 80;
     playerW = 80;
     gameOverBoard.style.visibility= "hidden";
-
+}
+function restartGame(){
+    reset()
     startGame()
 }
 function continu(){
@@ -385,6 +389,15 @@ function continu(){
     jellyfishArray.push(new Jellyfish)
     animate()
 }
+function goBack(){
+    startMusic.play();
+    gameBoard.style.display = "none";
+    gameOverBoard.style.visibility= "hidden";
+    levelUpScreen.style.visibility="hidden";
+    homeScreen.querySelector('#fin-score').innerHTML = `Your score is ${score}`
+    homeScreen.querySelector('#last-record').innerHTML = `Your record is ${bestScore}.`
+    reset()
+}
 function setVolume(){
     startMusic.volume = soundVolume;
     bgMusic.volume = soundVolume;
@@ -398,7 +411,8 @@ window.addEventListener("load", () => {
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
-    setVolume()
+    setVolume();
+    startMusic.play();
 
     startBtn.addEventListener("click", () => {
       startGame();
@@ -419,6 +433,9 @@ window.addEventListener("load", () => {
     });
     continuBtn.addEventListener("click", () => {
         continu();
+    });
+    goBackBtn.addEventListener("click", () => {
+        goBack();
     });
     volumeUpBtn.addEventListener("click", () => {
         soundVolume += 0.1;

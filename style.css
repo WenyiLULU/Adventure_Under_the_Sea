@@ -31,7 +31,19 @@ body {
     flex-direction: column;
     justify-content: center;
 }
-
+#start-message h1 {
+    font-size: 55px;
+    margin: 10px auto;
+}
+#start-message h2 {
+    font-size: 55px;
+    margin: 5px auto;
+    color: rgb(248, 72, 41);
+}
+#start-message p {
+    font-size: 25px;
+    margin: 5px auto;
+}
 #start-button{
     font-family: 'Allerta Stencil';
     height: 80px;
