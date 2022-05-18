@@ -33,7 +33,7 @@ const startMusic = document.getElementById('start-music');
 const bgMusic = document.getElementById('background-music');
 const levelupMusic = new Audio('./music/levelup.mp3');
 const gameOverSound = new Audio('./music/game-over.mp3');
-const biteSound = new Audio('./music/bite2.mp3');
+const biteSound = new Audio('./music/bite-short.mp3');
 
 // --- animate control ---
 let animationId;
@@ -213,11 +213,6 @@ function drawPlankton(){
         if (playerX <= xPos + planktonW && playerX + playerW -10 >= xPos && 
             playerY + playerH >= yPos && playerY + 10 <= yPos + planktonH) {
                 biteSound.play();
-                window.setTimeout(()=> {
-                    biteSound.pause();
-                    biteSound.currentTime = 0;
-                }, 1000);
-
                 if(kind === 'plankton'){score += 1;}
                else if(kind === 'shrimp') {score += 2;}
                else{score +=3}
@@ -335,6 +330,9 @@ function gameOverScreen(){
     }, 1000)
 }
 function drawLevelUp(){
+    bgMusic.pause();
+    levelupMusic.play();
+        
     level += 1;
     let playerImage, dangerImage
     window.setTimeout(()=> {
@@ -373,6 +371,9 @@ function continu(){
     foodsArray = [];
     playerH = 80;
     playerW = 100;
+    levelupMusic.pause();
+    levelupMusic.currentTime = 0;
+    bgMusic.play();
     jellyfishArray.push(new Jellyfish)
     animate()
 }
