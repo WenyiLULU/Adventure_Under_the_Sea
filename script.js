@@ -58,7 +58,7 @@ const levelScreenH = canvas.height / 2;
 let score = 0;
 let bestScore = 0;
 let life = 3;
-let playerInfo = {};
+let playerInfo = {lulu:0,};
 
 // --- player setting ---
 let playerH = 80;
