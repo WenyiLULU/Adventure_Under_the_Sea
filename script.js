@@ -13,6 +13,7 @@ const volumeUpBtn = document.getElementById('up');
 const volumeDownBtn = document.getElementById('down');
 const volumeMute = document.getElementById('mute');
 const nameInput = document.getElementById('input-form');
+const wellcome = document.getElementById('wellcome-message')
 let playerName 
 
 // --- imput images ---
@@ -405,7 +406,8 @@ function goBack(){
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
-    homeScreen.querySelector('#fin-score').innerHTML = `Hey ${playerName}, this time your record is ${bestScore}`
+    wellcome.style.visibility = "hidden"
+    homeScreen.querySelector('#fin-score').innerHTML = `Hey ${playerName}, this time your record is ${bestScore}.`
     homeScreen.querySelector('#last-record').innerHTML = `Your historical record is ${playerInfo[playerName]}.`
     reset()
 }
@@ -433,6 +435,10 @@ const addPlayer = (event) => {
     document.querySelector('form').reset();
     // saving in local storage
     localStorage.setItem('playerList', JSON.stringify(playerInfo))
+    wellcome.style.visibility = "visible";
+    wellcome.innerHTML = `Hello ${playerName}! <br/> Now click the "START" button to start your adventure!`
+    document.querySelector('form').style.visibility = "hidden";
+
 }
 
 // --- listeners ---
@@ -440,6 +446,7 @@ window.addEventListener("load", () => {
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
+    wellcome.style.visibility = "hidden"
     setVolume();
     startMusic.play();
 
