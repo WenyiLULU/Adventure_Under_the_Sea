@@ -127,7 +127,7 @@ class Plankton {
         this.yPos += planktonSpeed;
     }
 }
-let foodsArray = [new Plankton];
+let foodsArray = [];
 
 // --- draw background ---
 function drawBackground(){
