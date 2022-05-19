@@ -406,12 +406,19 @@ function setVolume(){
 }
 
 // --- local storage ---
+function getPlayerList(){
+    playerInfo = JSON.parse(localStorage.getItem('playerList'))
+}
 const addPlayer = (event) => {
-    event.preventDefault(); // to stop the form submission    
-    playerInfo[document.getElementById('player-name').value] = bestScore; 
-    
+    event.preventDefault(); // to stop the form submission
+    getPlayerList()
+    let playerName = document.getElementById('player-name').value
+    let exsiteName = Object.keys(playerInfo)
+     
+    if(!exsiteName.includes(playerName)){    
+        playerInfo[playerName] = bestScore;
+    }
     document.querySelector('form').reset();
-    console.log('added', {playerInfo})
     // saving in local storage
     localStorage.setItem('playerList', JSON.stringify(playerInfo))
 }
