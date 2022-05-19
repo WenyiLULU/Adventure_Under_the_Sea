@@ -88,6 +88,6 @@ You will control your role with the mouse movement. Try to eat the foods which a
 
 
 ## Links
-- [Slides Link](https://docs.google.com/presentation/d/1JffX5JM7vXvM1cPLgilF5B-9GKlq3tjI/edit#slide=id.p5)
+- [Slides Link](https://docs.google.com/presentation/d/1JffX5JM7vXvM1cPLgilF5B-9GKlq3tjI/edit#slide=id.p1)
 - [Github repository Link](https://github.com/WenyiLULU/Adventure_Under_the_Sea.git)
 - [Deployment Link](http://127.0.0.1:5500/index.html)
