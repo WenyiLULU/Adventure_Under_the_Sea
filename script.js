@@ -426,6 +426,7 @@ const addPlayer = (event) => {
     getPlayerList()
     playerName = document.getElementById('player-name').value
     let exsiteName = Object.keys(playerInfo)
+    console.log("hello", exsiteName)
     if(!exsiteName.includes(playerName)){    
         playerInfo[playerName] = 0;
     }
@@ -484,5 +485,5 @@ window.addEventListener("load", () => {
         };
         setVolume()
     })
-    document.getElementById('save').addEventListener('click', addPlayer)
   });
+  document.getElementById('save').addEventListener('click', addPlayer)
