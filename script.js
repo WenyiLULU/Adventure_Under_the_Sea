@@ -56,6 +56,7 @@ const levelScreenH = canvas.height / 2;
 let score = 0;
 let bestScore = 0;
 let life = 3;
+let playerInfo = {};
 
 // --- player setting ---
 let playerH = 80;
@@ -404,6 +405,17 @@ function setVolume(){
     gameOverSound.volume = soundVolume;
 }
 
+// --- local storage ---
+const addPlayer = (event) => {
+    event.preventDefault(); // to stop the form submission    
+    playerInfo[document.getElementById('player-name').value] = bestScore; 
+    
+    document.querySelector('form').reset();
+    console.log('added', {playerInfo})
+    // saving in local storage
+    localStorage.setItem('playerList', JSON.stringify(playerInfo))
+}
+
 // --- listeners ---
 window.addEventListener("load", () => {
     gameBoard.style.display = "none";
@@ -454,4 +466,5 @@ window.addEventListener("load", () => {
         };
         setVolume()
     })
+    document.getElementById('save').addEventListener('click', addPlayer)
   });
