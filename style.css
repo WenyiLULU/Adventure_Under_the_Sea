@@ -35,7 +35,7 @@ body {
     text-shadow: 3px 3px lightslategray; 
 }
 #start-message h2 {
-    margin: 5px auto;
+    margin: 10px auto;
     font-size: 55px;
     color: rgb(248, 72, 41);
     text-shadow: 3px 3px red;
@@ -43,6 +43,18 @@ body {
 #start-message p {
     font-size: 25px;
     margin: 5px auto;
+}
+#input-form {
+    font-size: 22px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#input-form button{
+    font-family: 'Allerta Stencil';
+    font-size: small;
+    margin:0 5px;
+    background-color: rgba(135,206,235, 0.7);
 }
 #start-button{
     font-family: 'Allerta Stencil';

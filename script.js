@@ -12,6 +12,8 @@ const goBackBtn = document.getElementById('goback');
 const volumeUpBtn = document.getElementById('up');
 const volumeDownBtn = document.getElementById('down');
 const volumeMute = document.getElementById('mute');
+const nameInput = document.getElementById('input-form');
+let playerName 
 
 // --- imput images ---
 const bgImg = new Image();
@@ -56,6 +58,7 @@ const levelScreenH = canvas.height / 2;
 let score = 0;
 let bestScore = 0;
 let life = 3;
+let playerInfo = {};
 
 // --- player setting ---
 let playerH = 80;
@@ -279,6 +282,17 @@ function drawLife(){
         heartX += 55;
     }
 }
+function setScores(){
+    getPlayerList()
+    if (score > bestScore) {
+        bestScore = score;
+      }
+    if (bestScore > playerInfo[playerName]){
+        playerInfo[playerName] = bestScore;
+    }
+    localStorage.setItem('playerList', JSON.stringify(playerInfo))
+
+}
 
 // --- animate ---
 function animate(){
@@ -302,9 +316,7 @@ function animate(){
     drawScore()
     
     if(gameOver){
-        if (score > bestScore) {
-            bestScore = score;
-          }
+        setScores()
         cancelAnimationFrame(animationId)
         gameOverScreen()
     } 
@@ -389,11 +401,12 @@ function continu(){
 }
 function goBack(){
     startMusic.play();
+    nameInput.style.visibility = "hidden"
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
-    homeScreen.querySelector('#fin-score').innerHTML = `Your score is ${score}`
-    homeScreen.querySelector('#last-record').innerHTML = `Your record is ${bestScore}.`
+    homeScreen.querySelector('#fin-score').innerHTML = `Hey ${playerName}, this time your record is ${bestScore}`
+    homeScreen.querySelector('#last-record').innerHTML = `Your historical record is ${playerInfo[playerName]}.`
     reset()
 }
 function setVolume(){
@@ -402,6 +415,23 @@ function setVolume(){
     biteSound.volume = soundVolume;
     levelupMusic.volume = soundVolume;
     gameOverSound.volume = soundVolume;
+}
+
+// --- local storage ---
+function getPlayerList(){
+    playerInfo = JSON.parse(localStorage.getItem('playerList'))
+}
+const addPlayer = (event) => {
+    event.preventDefault(); // to stop the form submission
+    getPlayerList()
+    playerName = document.getElementById('player-name').value
+    let exsiteName = Object.keys(playerInfo)
+    if(!exsiteName.includes(playerName)){    
+        playerInfo[playerName] = 0;
+    }
+    document.querySelector('form').reset();
+    // saving in local storage
+    localStorage.setItem('playerList', JSON.stringify(playerInfo))
 }
 
 // --- listeners ---
@@ -454,4 +484,5 @@ window.addEventListener("load", () => {
         };
         setVolume()
     })
+    document.getElementById('save').addEventListener('click', addPlayer)
   });
