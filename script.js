@@ -12,6 +12,7 @@ const goBackBtn = document.getElementById('goback');
 const volumeUpBtn = document.getElementById('up');
 const volumeDownBtn = document.getElementById('down');
 const volumeMute = document.getElementById('mute');
+const nameInput = document.getElementById('input-form');
 let playerName 
 
 // --- imput images ---
@@ -400,6 +401,7 @@ function continu(){
 }
 function goBack(){
     startMusic.play();
+    nameInput.style.visibility = "hidden"
     gameBoard.style.display = "none";
     gameOverBoard.style.visibility= "hidden";
     levelUpScreen.style.visibility="hidden";
