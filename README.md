@@ -1,6 +1,6 @@
 # Adventure_Under_the_Sea
 
-[Click here to see deployed game](http://127.0.0.1:5500/index.html)
+[Click here to see deployed game](https://wenyilulu.github.io/Adventure_Under_the_Sea/)
 ![game start page](./image/home_page.PNG)
 
 ## Description
