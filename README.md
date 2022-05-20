@@ -79,12 +79,21 @@ You will control your role with the mouse movement. Try to eat the foods which a
 
 
 ## Task
-- Week end : image and music search
-- Monday : MVP
-- Tuesday : level up settings
-- Wednesday : Music & UI/UX
-- Thursday : local storage, documentation, presentation prepar
-- Friday : presentation
+- Time line
+    - Week end : image and music search
+    - Monday : MVP
+    - Tuesday : level up settings
+    - Wednesday : Music & UI/UX
+    - Thursday : local storage, documentation, presentation prepar
+    - Friday : presentation
+- Code structure
+    - import elements from html file
+    - declaire variables
+    - define food and danges class
+    - functions for draw items on canvas
+    - animate function
+    - animate control functions
+    - event listeners
 
 
 ## Links
